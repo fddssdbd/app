@@ -48,3 +48,4 @@ jobs:
         with:
           commit_message: 'chore: sync data from Feishu'
           file_pattern: 'public/data/*.json public/images/feishu/**/*.* LAST_SYNC.md'
+          push_options: '--force-with-lease'
