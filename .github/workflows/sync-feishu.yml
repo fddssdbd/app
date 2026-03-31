@@ -10,6 +10,7 @@ on:
 jobs:
   sync_data:
     runs-on: ubuntu-latest
+    environment: secrets
     permissions:
       contents: write
 
