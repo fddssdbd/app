@@ -1,0 +1,49 @@
+name: Sync Data from Feishu
+
+on:
+  schedule:
+    # 每天 UTC 00:00 自动同步
+    - cron: '0 0 * * *'
+  # 支持手动触发
+  workflow_dispatch:
+
+jobs:
+  sync_data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install --upgrade pip requests
+
+      - name: Run sync scripts
+        env:
+          FEISHU_APP_ID:         ${{ secrets.FEISHU_APP_ID }}
+          FEISHU_APP_SECRET:     ${{ secrets.FEISHU_APP_SECRET }}
+          FEISHU_APP_TOKEN:      ${{ secrets.FEISHU_APP_TOKEN }}
+          FEISHU_TABLE_PRODUCT:  ${{ secrets.FEISHU_TABLE_PRODUCT }}
+          FEISHU_TABLE_CATEGORY: ${{ secrets.FEISHU_TABLE_CATEGORY }}
+        run: bash ./scripts/sync_all.sh
+
+      - name: Update sync timestamp
+        run: |
+          echo "Last sync: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" > LAST_SYNC.md
+          echo "Run: ${{ github.run_number }}" >> LAST_SYNC.md
+          echo "Trigger: ${{ github.event_name }}" >> LAST_SYNC.md
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: sync data from Feishu'
+          file_pattern: 'public/data/*.json public/images/feishu/**/*.* LAST_SYNC.md'

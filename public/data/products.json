@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Sample Product — Replace via Feishu Sync",
+    "slug": "sample-product",
+    "sku": "SP-001",
+    "price": 99,
+    "categorySlug": "general",
+    "categoryName": "General",
+    "tags": ["Featured"],
+    "images": ["https://placehold.co/800x600?text=Product+Image"],
+    "details": "This is a placeholder product. Run the Feishu sync script to populate real data.",
+    "amazonLink": "",
+    "seo": {
+      "title": "Sample Product",
+      "keywords": "sample, product",
+      "description": "Placeholder product for local development."
+    },
+    "createdAt": 0
+  }
+]
