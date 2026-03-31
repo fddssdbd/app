@@ -1,19 +1,113 @@
 [
   {
-    "title": "Sample Product — Replace via Feishu Sync",
-    "slug": "sample-product",
-    "sku": "SP-001",
-    "price": 99,
-    "categorySlug": "general",
-    "categoryName": "General",
-    "tags": ["Featured"],
-    "images": ["https://placehold.co/800x600?text=Product+Image"],
-    "details": "This is a placeholder product. Run the Feishu sync script to populate real data.",
-    "amazonLink": "",
+    "title": "Test",
+    "slug": "Test",
+    "sku": "Jjh",
+    "price": "96",
+    "categorySlug": "食品",
+    "categoryName": "食品",
+    "tags": [
+      "Featured"
+    ],
+    "images": [
+      "/images/feishu/product/YSWSbOFDHo7Jkzx1MyxcrvZFnIr-IMG_3313.JPEG"
+    ],
+    "details": null,
+    "amazonLink": null,
     "seo": {
-      "title": "Sample Product",
-      "keywords": "sample, product",
-      "description": "Placeholder product for local development."
+      "title": null,
+      "keywords": "",
+      "description": null
+    },
+    "createdAt": 5
+  },
+  {
+    "title": null,
+    "slug": null,
+    "sku": null,
+    "price": null,
+    "categorySlug": "",
+    "categoryName": "",
+    "tags": [],
+    "images": [],
+    "details": null,
+    "amazonLink": null,
+    "seo": {
+      "title": null,
+      "keywords": "",
+      "description": null
+    },
+    "createdAt": 4
+  },
+  {
+    "title": null,
+    "slug": null,
+    "sku": null,
+    "price": null,
+    "categorySlug": "",
+    "categoryName": "",
+    "tags": [],
+    "images": [],
+    "details": null,
+    "amazonLink": null,
+    "seo": {
+      "title": null,
+      "keywords": "",
+      "description": null
+    },
+    "createdAt": 3
+  },
+  {
+    "title": null,
+    "slug": null,
+    "sku": null,
+    "price": null,
+    "categorySlug": "",
+    "categoryName": "",
+    "tags": [],
+    "images": [],
+    "details": null,
+    "amazonLink": null,
+    "seo": {
+      "title": null,
+      "keywords": "",
+      "description": null
+    },
+    "createdAt": 2
+  },
+  {
+    "title": null,
+    "slug": null,
+    "sku": null,
+    "price": null,
+    "categorySlug": "",
+    "categoryName": "",
+    "tags": [],
+    "images": [],
+    "details": null,
+    "amazonLink": null,
+    "seo": {
+      "title": null,
+      "keywords": "",
+      "description": null
+    },
+    "createdAt": 1
+  },
+  {
+    "title": null,
+    "slug": null,
+    "sku": null,
+    "price": null,
+    "categorySlug": "",
+    "categoryName": "",
+    "tags": [],
+    "images": [],
+    "details": null,
+    "amazonLink": null,
+    "seo": {
+      "title": null,
+      "keywords": "",
+      "description": null
     },
     "createdAt": 0
   }
