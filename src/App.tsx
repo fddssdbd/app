@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './i18n';
 import Navbar from './sections/Navbar';
 import Hero from './sections/Hero';
@@ -9,9 +10,10 @@ import Services from './sections/Services';
 import Testimonials from './sections/Testimonials';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
+import ProductDetail from './pages/ProductDetail';
 import { Toaster } from '@/components/ui/sonner';
 
-function App() {
+function Layout() {
   const { i18n } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -51,8 +53,19 @@ function App() {
         <Contact />
       </main>
       <Footer />
-      <Toaster position="top-center" />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />} />
+        <Route path="/products/:slug" element={<ProductDetail />} />
+      </Routes>
+      <Toaster position="top-center" />
+    </BrowserRouter>
   );
 }
 

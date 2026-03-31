@@ -1,15 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, Filter, ArrowRight, Package, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { Search, Filter, ArrowRight, Package } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
@@ -29,13 +23,9 @@ export default function Products() {
   const { products, isLoaded } = useProducts();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [activeImage, setActiveImage] = useState(0);
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
-  // Derive unique categories from product data
   const categories = [
     { slug: 'all', name: t('products.allCategories') },
     ...Array.from(
@@ -81,12 +71,6 @@ export default function Products() {
     return matchesSearch && matchesCategory;
   });
 
-  const openDetail = (product: Product) => {
-    setSelectedProduct(product);
-    setActiveImage(0);
-    setIsDetailOpen(true);
-  };
-
   const mainImage = (p: Product) =>
     p.images?.[0] ?? 'https://placehold.co/800x600?text=No+Image';
 
@@ -101,13 +85,10 @@ export default function Products() {
   }
 
   return (
-    <section
-      id="products"
-      ref={sectionRef}
-      className="py-20 lg:py-32 bg-[#f7f7f7] relative"
-    >
+    <section id="products" ref={sectionRef} className="py-20 lg:py-32 bg-[#f7f7f7] relative">
       <div className="w-full section-padding">
         <div className="max-w-7xl mx-auto">
+
           {/* Header */}
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#f2fe6f]/20 rounded-full mb-6">
@@ -152,15 +133,16 @@ export default function Products() {
           {filteredProducts.length > 0 ? (
             <div ref={cardsRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredProducts.map((product) => (
-                <div
+                <Link
                   key={product.slug ?? product.title}
+                  to={`/products/${product.slug}`}
                   className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                 >
-                  <div className="relative h-56 overflow-hidden">
+                  <div className="relative h-56 overflow-hidden bg-gray-50">
                     <img
                       src={mainImage(product)}
                       alt={product.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-contain p-3 transition-transform duration-500 group-hover:scale-105"
                     />
                     {product.tags?.length > 0 && (
                       <div className="absolute top-4 left-4 flex flex-wrap gap-1">
@@ -174,34 +156,22 @@ export default function Products() {
                   </div>
                   <div className="p-6">
                     <div className="text-sm text-gray-500 mb-2">{product.categoryName}</div>
-                    <h3 className="text-xl font-bold text-[#1a1a1a] mb-2 line-clamp-1">
+                    <h3 className="text-base font-bold text-[#1a1a1a] mb-2 line-clamp-2 leading-snug">
                       {product.title}
                     </h3>
-                    <p className="text-[#333333] text-sm mb-4 line-clamp-2">
-                      {product.details}
-                    </p>
-                    <div className="flex items-center justify-between mb-4">
-                      {product.sku && (
-                        <div>
-                          <span className="text-xs text-gray-500">SKU:</span>
-                          <span className="text-sm font-medium ml-1">{product.sku}</span>
-                        </div>
-                      )}
+                    <div className="flex items-center justify-between mt-4">
                       {product.price != null && (
                         <div className="text-xl font-bold text-[#1a1a1a]">
                           ${product.price.toLocaleString()}
                         </div>
                       )}
+                      <span className="inline-flex items-center gap-1 text-sm font-medium text-[#1a1a1a] group-hover:gap-2 transition-all">
+                        {t('products.viewDetails')}
+                        <ArrowRight className="w-4 h-4" />
+                      </span>
                     </div>
-                    <Button
-                      onClick={() => openDetail(product)}
-                      className="w-full btn-primary flex items-center justify-center gap-2"
-                    >
-                      {t('products.viewDetails')}
-                      <ArrowRight className="w-4 h-4" />
-                    </Button>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           ) : (
@@ -212,116 +182,6 @@ export default function Products() {
           )}
         </div>
       </div>
-
-      {/* Product Detail Dialog */}
-      <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          {selectedProduct && (
-            <>
-              <DialogHeader>
-                <DialogTitle className="text-2xl font-bold text-[#1a1a1a]">
-                  {selectedProduct.title}
-                </DialogTitle>
-              </DialogHeader>
-
-              <div className="grid md:grid-cols-2 gap-6 mt-4">
-                {/* Image Gallery */}
-                <div className="space-y-3">
-                  <div className="rounded-xl overflow-hidden bg-gray-100">
-                    <img
-                      src={selectedProduct.images?.[activeImage] ?? mainImage(selectedProduct)}
-                      alt={selectedProduct.title}
-                      className="w-full h-64 object-cover"
-                    />
-                  </div>
-                  {selectedProduct.images && selectedProduct.images.length > 1 && (
-                    <div className="flex gap-2 flex-wrap">
-                      {selectedProduct.images.map((img, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => setActiveImage(idx)}
-                          className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors ${
-                            activeImage === idx ? 'border-[#f2fe6f]' : 'border-transparent'
-                          }`}
-                        >
-                          <img src={img} alt="" className="w-full h-full object-cover" />
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Product Info */}
-                <div className="space-y-4">
-                  <div>
-                    <span className="text-sm text-gray-500">{t('products.category')}:</span>
-                    <span className="ml-2 font-medium">{selectedProduct.categoryName}</span>
-                  </div>
-
-                  {selectedProduct.price != null && (
-                    <div>
-                      <span className="text-sm text-gray-500">{t('products.price')}:</span>
-                      <span className="ml-2 text-2xl font-bold text-[#1a1a1a]">
-                        ${selectedProduct.price.toLocaleString()}
-                      </span>
-                    </div>
-                  )}
-
-                  {selectedProduct.sku && (
-                    <div>
-                      <span className="text-sm text-gray-500">SKU:</span>
-                      <span className="ml-2 font-medium">{selectedProduct.sku}</span>
-                    </div>
-                  )}
-
-                  {selectedProduct.tags?.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {selectedProduct.tags.map((tag, i) => (
-                        <Badge key={i} className="bg-[#f2fe6f]/20 text-[#1a1a1a]">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                  )}
-
-                  {selectedProduct.details && (
-                    <div>
-                      <span className="text-sm text-gray-500">{t('products.description')}:</span>
-                      <p className="mt-2 text-[#333333] text-sm leading-relaxed">
-                        {selectedProduct.details}
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="flex flex-col gap-3 pt-2">
-                    {selectedProduct.amazonLink && (
-                      <a
-                        href={selectedProduct.amazonLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full btn-primary flex items-center justify-center gap-2 rounded-lg py-2 text-sm font-medium"
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        {t('products.buyOnAmazon')}
-                      </a>
-                    )}
-                    <Button
-                      onClick={() => {
-                        setIsDetailOpen(false);
-                        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-                      }}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      {t('products.inquiry')}
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
     </section>
   );
 }
