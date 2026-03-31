@@ -1,2 +1,4 @@
 {
+    "terminal.integrated.defaultProfile.windows": "Windows PowerShell",
+    "terminal.integrated.splitCwd": "workspaceRoot"
 }

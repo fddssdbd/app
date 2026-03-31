@@ -6,21 +6,19 @@
 import os, json, pathlib, requests, time, re
 from urllib.parse import urlparse
 
-APP_ID     = os.getenv("FEISHU_APP_ID", "cli_a9410f816078dbd2")
-APP_SECRET = os.getenv("FEISHU_APP_SECRET", "MpBJZpWeaWvfGf9DkDphfdg5fZrWpTVz")
+APP_ID     = os.getenv("FEISHU_APP_ID", "")
+APP_SECRET = os.getenv("FEISHU_APP_SECRET", "")
 BASE_URL   = "https://open.feishu.cn"
 
 # 输出目录（相对于项目根目录）
 DATA_DIR        = pathlib.Path(__file__).parent.parent / "public" / "data"
 FEISHU_IMG_DIR  = pathlib.Path(__file__).parent.parent / "public" / "images" / "feishu"
 
-# 在此填写飞书多维表格的 app_token 和 table_id
-# 建议通过环境变量注入，避免硬编码
 TABLES = {
     "product": dict(
         cn_name="商品信息",
-        app=os.getenv("FEISHU_APP_TOKEN", "RgLPbsKzqaMksbsMJWacFwDznsd"),
-        tbl=os.getenv("FEISHU_TABLE_PRODUCT", "tblGRWhK5I8mt1EV&view=vewJ29vA3l"),
+        app=os.getenv("FEISHU_APP_TOKEN", ""),
+        tbl=os.getenv("FEISHU_TABLE_PRODUCT", ""),
     ),
     "category": dict(
         cn_name="商品分类",
@@ -36,7 +34,13 @@ def get_tenant_token() -> str:
     url  = f"{BASE_URL}/open-apis/auth/v3/tenant_access_token/internal"
     r = requests.post(url, json={"app_id": APP_ID, "app_secret": APP_SECRET}, timeout=10)
     r.raise_for_status()
-    return r.json()["tenant_access_token"]
+    data = r.json()
+    if "tenant_access_token" not in data:
+        raise RuntimeError(
+            f"获取 tenant_access_token 失败，飞书返回：{data}\n"
+            f"请检查 FEISHU_APP_ID={APP_ID!r} 和 FEISHU_APP_SECRET 是否正确配置。"
+        )
+    return data["tenant_access_token"]
 
 
 def list_records(app_token: str, table_id: str, token: str, sort_field: str = None) -> list:
