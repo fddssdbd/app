@@ -44,7 +44,7 @@ def transform_products(records: list, token: str) -> list:
             "tags":         f.get("打标", []),
             "images":       images,
             "details":      f.get("商品详情"),
-            "amazonLink":   f.get("亚马逊购买链接"),
+            "amazonLink":   f.get("购买链接"),
             "seo": {
                 "title":       f.get("商品标题title"),
                 "keywords":    ", ".join(f.get("商品keywords", [])) if isinstance(f.get("商品keywords"), list) else f.get("商品keywords", ""),
