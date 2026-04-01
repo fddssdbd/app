@@ -25,14 +25,23 @@
     "createdAt": 5
   },
   {
-    "title": null,
-    "slug": null,
+    "title": "test2",
+    "slug": "test2",
     "sku": null,
-    "price": null,
-    "categorySlug": "",
-    "categoryName": "",
-    "tags": [],
-    "images": [],
+    "price": "99.63",
+    "categorySlug": "玩具",
+    "categoryName": "玩具",
+    "tags": [
+      "New、Bestseller",
+      "Featured"
+    ],
+    "images": [
+      "/images/feishu/product/MJoqbj39Ao3ySXxkL3ZcPiGsnLe-IMG_2579.JPEG",
+      "/images/feishu/product/Sw3nbhLeUogYpVxCbYLc5bmTn7u-IMG_2580.JPEG",
+      "/images/feishu/product/CmUtbO2l0odq3nxYQVocrubBnCX-IMG_2571.JPEG",
+      "/images/feishu/product/BB6XbVXqDoIEx4xDRQvcokWknYd-IMG_2570.JPEG",
+      "/images/feishu/product/U4lmbtgLIoqhdlxDUXSc21dwnIA-IMG_2577.JPEG"
+    ],
     "details": null,
     "amazonLink": null,
     "seo": {
